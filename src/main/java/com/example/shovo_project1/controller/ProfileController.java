@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,8 +49,21 @@ public class ProfileController
     {
         Profile profile = profileRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Profile not found with the id : "+id));
-        
+        profile.setPhotoURL(profileDetails.getPhotoURL());
+        profile.setName(profileDetails.getName());
+        profile.setEmail(profileDetails.getEmail());
+        profile.setPhoneNumber((profileDetails.getPhoneNumber()));
+        profile.setAddress((profileDetails.getAddress()));
         Profile updateProfile = profileRepository.save(profile);
         return ResponseEntity.ok(updateProfile);   
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long id) throws ResourceNotFoundException
+    {
+        Profile profile = profileRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Profile not found with the id : "+id));
+        profileRepository.delete(profile);
+        return ResponseEntity.noContent().build();
     }
 }
