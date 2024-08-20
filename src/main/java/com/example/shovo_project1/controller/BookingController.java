@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,5 +59,14 @@ public class BookingController
         booking.setConfirmBooking((bookingDetails.getConfirmBooking()));
         Booking updateBooking = bookingRepository.save(booking);
         return ResponseEntity.ok(updateBooking);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Booking> deleteBooking(@PathVariable Long id) throws ResourceNotFoundException
+    {
+        Booking booking = bookingRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Booking is not found with the id : "+id));
+        bookingRepository.delete(booking);
+        return ResponseEntity.noContent().build();
     }
 }
