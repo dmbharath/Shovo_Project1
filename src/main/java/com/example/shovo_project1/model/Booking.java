@@ -69,11 +69,11 @@ public class Booking
     {
         return bookingDateTime;
     }
-    public void setAddress(String bookingAddress)
+    public void setBookingAddress(String bookingAddress)
     {
         this.bookingAddress = bookingAddress;
     }
-    public String getAddress()
+    public String getBookingAddress()
     {
         return bookingAddress;
     }
