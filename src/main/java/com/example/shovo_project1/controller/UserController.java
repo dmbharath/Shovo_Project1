@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.User;
-import com.example.shovo_project1.services.UserService;
+import com.example.shovo_project1.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
