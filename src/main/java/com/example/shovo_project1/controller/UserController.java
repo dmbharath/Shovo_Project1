@@ -15,55 +15,46 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.User;
-import com.example.shovo_project1.repository.UserRepository;
+import com.example.shovo_project1.services.UserService;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController 
 {       
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public List<User> getAllUsers()
     {
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
     
     @PostMapping
     public User createUser(@RequestBody User user)
     {
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) throws ResourceNotFoundException
     {
-        User user = userRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User not found with the id : "+id));
+        User user = userService.getUserById(id);
         return ResponseEntity.ok(user);   
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) throws ResourceNotFoundException
     {
-        User user = userRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User not found with the id : "+id));
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        user.setPhoneNumber(userDetails.getPhoneNumber());
-        user.setAddress((userDetails.getAddress()));
-
-        User updateUser = userRepository.save(user);
+        User updateUser = userService.updateUser(id, userDetails);
+       
         return ResponseEntity.ok(updateUser);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws ResourceNotFoundException
     {
-        User user = userRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User not found with the id" +id));
-        userRepository.delete(user);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }
