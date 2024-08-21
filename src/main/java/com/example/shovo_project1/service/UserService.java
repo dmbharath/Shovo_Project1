@@ -20,7 +20,7 @@ public class UserService {
 
     public User getUserById(Long id) throws ResourceNotFoundException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     public User createUser(User user) {
@@ -29,7 +29,7 @@ public class UserService {
 
     public User updateUser(Long id, User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
@@ -41,7 +41,7 @@ public class UserService {
 
     public void deleteUser(Long id) throws ResourceNotFoundException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         userRepository.delete(user);
     }
 }
