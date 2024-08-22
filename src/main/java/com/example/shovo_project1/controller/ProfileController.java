@@ -15,55 +15,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Profile;
-import com.example.shovo_project1.repository.ProfileRepository;
+import com.example.shovo_project1.service.ProfileService;
 
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController 
 {
     @Autowired
-    private ProfileRepository profileRepository;
+    private ProfileService profileService;
 
     @GetMapping
     public List<Profile> getAllProfiles()
     {
-        return profileRepository.findAll();
+        return profileService.getAllProfiles();
     }
 
     @PostMapping
     public Profile createProfile(@RequestBody Profile profile)
     {
-        return profileRepository.save(profile);
+        return profileService.createProfile(profile);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Profile> getProfileById(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Profile profile = profileRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Profile not found with the id : "+id));
+        Profile profile = profileService.getProfileById(id);
         return ResponseEntity.ok(profile);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Profile> updateProfile(@PathVariable Long id, @RequestBody Profile profileDetails) throws ResourceNotFoundException
     {
-        Profile profile = profileRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Profile not found with the id : "+id));
-        profile.setPhotoURL(profileDetails.getPhotoURL());
-        profile.setName(profileDetails.getName());
-        profile.setEmail(profileDetails.getEmail());
-        profile.setPhoneNumber((profileDetails.getPhoneNumber()));
-        profile.setAddress((profileDetails.getAddress()));
-        Profile updateProfile = profileRepository.save(profile);
+        Profile updateProfile = profileService.updateProfile(id, profileDetails);
         return ResponseEntity.ok(updateProfile);   
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProfile(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Profile profile = profileRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Profile not found with the id : "+id));
-        profileRepository.delete(profile);
+        profileService.deleteProfile(id);
         return ResponseEntity.noContent().build();
     }
 }
