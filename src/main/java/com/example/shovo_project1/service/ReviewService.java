@@ -3,13 +3,12 @@ package com.example.shovo_project1.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Review;
 import com.example.shovo_project1.repository.ReviewRepository;
-
-@RestController
+@Service
 public class ReviewService 
 {
     @Autowired
@@ -35,7 +34,7 @@ public class ReviewService
     {
         Review review = reviewRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Review not found with the id : "+id));
-        
+
         review.setRating(reviewDetails.getRating());
         review.setDescription(reviewDetails.getDescription());
         review.setPhotoURL(reviewDetails.getPhotoURL());
