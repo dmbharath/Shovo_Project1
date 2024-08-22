@@ -15,53 +15,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Review;
-import com.example.shovo_project1.repository.ReviewRepository;
+import com.example.shovo_project1.service.ReviewService;
 
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController 
 {
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewService reviewService;
 
     @GetMapping
     public List<Review> getAllReviews()
     {
-        return reviewRepository.findAll();
+        return reviewService.getAllReviews();
     }
 
     @PostMapping
     public Review createReview(@RequestBody Review review)
     {
-        return reviewRepository.save(review);
+        return reviewService.createReview(review);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Review review = reviewRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Review not found with the id : "+id));
+        Review review = reviewService.getReviewById(id);
         return ResponseEntity.ok(review);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewDetails) throws ResourceNotFoundException
     {
-        Review review = reviewRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Review not found with the id : "+id));
-        review.setRating(reviewDetails.getRating());
-        review.setDescription(reviewDetails.getDescription());
-        review.setPhotoURL(reviewDetails.getPhotoURL());
-        Review updateReview = reviewRepository.save(review);
+        Review updateReview = reviewService.updateReview(id, reviewDetails);
         return ResponseEntity.ok(updateReview);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Review> deleteReview(@PathVariable Long id) throws ResourceNotFoundException
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Review review = reviewRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Review not found with the id : "+id));
-        reviewRepository.delete(review);
+        reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
     }
 }
