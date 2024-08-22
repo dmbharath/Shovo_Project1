@@ -3,15 +3,13 @@ package com.example.shovo_project1.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Booking;
 import com.example.shovo_project1.repository.BookingRepository;
 
-@RestController
-@RequestMapping("/api/booking")
+@Service
 public class BookingService 
 {
     @Autowired
