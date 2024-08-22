@@ -45,8 +45,6 @@ public class CustomQueryController
     public ResponseEntity<CustomQuery> updateCustomQuery(@PathVariable Long id, @RequestBody CustomQuery customQueryDetails) throws ResourceNotFoundException
     {
         CustomQuery updateCustomQuery = customQueryService.updateCustomQuery(id, customQueryDetails);
-        
-        updateCustomQuery.setQueryText((customQueryDetails.getQueryText()));
         return ResponseEntity.ok(updateCustomQuery);
     }
 
