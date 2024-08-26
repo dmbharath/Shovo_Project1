@@ -15,58 +15,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Booking;
-import com.example.shovo_project1.repository.BookingRepository;
+import com.example.shovo_project1.service.BookingService;
 
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController 
 {
     @Autowired
-    private BookingRepository bookingRepository;
+    private BookingService bookingService;
 
     @GetMapping
     public List<Booking> getAllBookings()
     {
-        return bookingRepository.findAll();
+        return bookingService.getAllBookings();
     }
 
     @PostMapping
     public Booking createBooking(@RequestBody Booking booking)
     {
-        return bookingRepository.save(booking);
+        return bookingService.createBooking(booking);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Booking> getBookingById(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Booking booking = bookingRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Booking is not found with id : "+id));
+        Booking booking = bookingService.getBookingById(id);
         return ResponseEntity.ok(booking);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) throws ResourceNotFoundException
     {
-        Booking booking = bookingRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Booking is not found with id : "+id));
-        booking.setBookingService(bookingDetails.getBookingService());
-        booking.setBookingCategory((bookingDetails.getBookingCategory()));
-        booking.setBookingPrice((bookingDetails.getBookingPrice()));
-        booking.setCreationDateTime((booking.getCreationDateTime()));
-        booking.setBookingDateTime((bookingDetails.getBookingDateTime()));
-        booking.setBookingAddress((bookingDetails.getBookingAddress()));
-        booking.setBookingDescription((bookingDetails.getBookingDescription()));
-        booking.setConfirmBooking((bookingDetails.getConfirmBooking()));
-        Booking updateBooking = bookingRepository.save(booking);
-        return ResponseEntity.ok(updateBooking);
+        Booking booking = bookingService.updateBooking(id, bookingDetails);
+        return ResponseEntity.ok(booking);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Booking> deleteBooking(@PathVariable Long id) throws ResourceNotFoundException
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Booking booking = bookingRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Booking is not found with the id : "+id));
-        bookingRepository.delete(booking);
+        bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
     }
 }

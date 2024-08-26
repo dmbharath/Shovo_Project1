@@ -9,25 +9,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
-
+public class UserService 
+{
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers() 
+    {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long id) throws ResourceNotFoundException {
+    public User getUserById(Long id) throws ResourceNotFoundException 
+    {
         return userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
-    public User createUser(User user) {
+    public User createUser(User user) 
+    {
         return userRepository.save(user);
     }
 
-    public User updateUser(Long id, User userDetails) throws ResourceNotFoundException {
+    public User updateUser(Long id, User userDetails) throws ResourceNotFoundException 
+    {
         User user = userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
@@ -39,7 +43,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Long id) throws ResourceNotFoundException {
+    public void deleteUser(Long id) throws ResourceNotFoundException 
+    {
         User user = userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         userRepository.delete(user);

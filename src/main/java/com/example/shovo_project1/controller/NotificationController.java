@@ -14,53 +14,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shovo_project1.exception.ResourceNotFoundException;
 import com.example.shovo_project1.model.Notifications;
-import com.example.shovo_project1.repository.NotificationsRepository;
+import com.example.shovo_project1.service.NotificationService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/notifications")
 public class NotificationController 
 {
     @Autowired
-    private NotificationsRepository notificationsRepository;
+    private NotificationService notificationService;
 
     @GetMapping
     public List<Notifications> getAllNotifications()
     {
-        return notificationsRepository.findAll();
+        return notificationService.getAllNotifications();
     }
 
     @PostMapping
     public Notifications createNotifications(@RequestBody Notifications notifications)
     {
-        return notificationsRepository.save(notifications);
+        return notificationService.createNotifications(notifications);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Notifications> getNotificationsById(@PathVariable Long id)throws ResourceNotFoundException
     {
-        Notifications notifications = notificationsRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Notifications not found with the id : "+id));
+        Notifications notifications = notificationService.getNotificationsById(id);
         return ResponseEntity.ok(notifications);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Notifications> updateNotifications(@PathVariable Long id, @RequestBody Notifications notificationsDetails) throws ResourceNotFoundException
     {
-        Notifications notifications = notificationsRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Notifications not found with the id : "+id));
-        notifications.setReadMessage(notificationsDetails.getReadMessage());
-        notifications.setTypeMessage(notificationsDetails.getTypeMessage());
-
-        Notifications updateNotifications = notificationsRepository.save(notifications);
-        return ResponseEntity.ok(updateNotifications);
+        Notifications notifications = notificationService.updateNotifications(id, notificationsDetails);
+        return ResponseEntity.ok(notifications);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Notifications> deleteNotifications(@PathVariable Long id) throws ResourceNotFoundException
+    public ResponseEntity<Void> deleteNotifications(@PathVariable Long id) throws ResourceNotFoundException
     {
-        Notifications notifications = notificationsRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Notifications are not found with id : "+id));
-        notificationsRepository.delete(notifications);
+        notificationService.deleteNotifications(id);
         return ResponseEntity.noContent().build();
     }
 }
