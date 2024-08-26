@@ -24,6 +24,8 @@ public class Profile
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public Profile()
+    {}
     public Profile(String photoURL, String name, String email, Long phoneNumber, String address)
     {
         this.photoURL = photoURL;
