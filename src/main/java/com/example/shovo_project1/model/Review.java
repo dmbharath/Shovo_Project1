@@ -22,6 +22,9 @@ public class Review
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public Review()
+    {}
+
     public Review(int rating, String description, String photoURL)
     {
         this.rating = rating;
