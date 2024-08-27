@@ -21,6 +21,9 @@ public class Communication
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public Communication()
+    {}
+
     public Communication(String chatComm, String callComm)
     {
         this.chatComm = chatComm;
