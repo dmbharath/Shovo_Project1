@@ -21,6 +21,9 @@ public class Notifications
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public Notifications()
+    {}
+
     public Notifications(String typeMessage, boolean readMessage)
     {
         this.typeMessage = typeMessage;
