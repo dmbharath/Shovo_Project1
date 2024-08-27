@@ -29,6 +29,9 @@ public class Booking
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public Booking()
+    {}
+
     public void setBookingService(String bookingService)
     {
         this.bookingService = bookingService;
