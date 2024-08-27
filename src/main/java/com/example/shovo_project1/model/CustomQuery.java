@@ -20,6 +20,9 @@ public class CustomQuery
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    public CustomQuery()
+    {}
+
     public CustomQuery(String queryText)
     {
         this.queryText = queryText;
